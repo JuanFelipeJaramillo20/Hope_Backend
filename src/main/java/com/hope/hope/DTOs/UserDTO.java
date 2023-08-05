@@ -1,18 +1,12 @@
-package com.hope.hope.Entities;
+package com.hope.hope.DTOs;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
 @Data
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class UserDTO {
     private String username;
     private String password;
     private String email;
     private boolean isDoctor;
     private boolean isFunctionary;
-
 }
