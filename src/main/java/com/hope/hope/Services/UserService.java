@@ -5,14 +5,18 @@ import com.hope.hope.Entities.User;
 import com.hope.hope.Repositories.MedicalUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserService {
     private final MedicalUserRepository medicalUserRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserService(MedicalUserRepository medicalUserRepository) {
+    public UserService(MedicalUserRepository medicalUserRepository, BCryptPasswordEncoder passwordEncoder) {
         this.medicalUserRepository = medicalUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User findUserByUsername(String username) {
@@ -22,7 +26,7 @@ public class UserService {
     public User registerMedicalUser(String username, String password, String email, boolean isDoctor, boolean isFunctionary) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password); // Make sure to properly hash the password before saving
+        user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
         user.setDoctor(isDoctor);
         user.setFunctionary(isFunctionary);

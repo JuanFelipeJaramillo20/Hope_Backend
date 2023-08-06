@@ -5,14 +5,18 @@ import com.hope.hope.Entities.User;
 import com.hope.hope.Repositories.ForumUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Service
 public class ForumService {
     private final ForumUserRepository forumUserRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public ForumService(ForumUserRepository forumUserRepository) {
+    public ForumService(ForumUserRepository forumUserRepository, BCryptPasswordEncoder passwordEncoder) {
         this.forumUserRepository = forumUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User findUserByUsername(String username) {
@@ -22,7 +26,7 @@ public class ForumService {
     public User registerForumUser(String username, String password, String email) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password); // Make sure to properly hash the password before saving
+        user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
         user.setDoctor(false);
         user.setFunctionary(false);
